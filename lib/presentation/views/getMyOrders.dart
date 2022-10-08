@@ -30,12 +30,12 @@ class _UsersOrdersState extends State<UsersOrders> {
   }
 
   Widget _getUI(BuildContext context) {
-    var user = Provider.of<User>(context);
+    User user = FirebaseAuth.instance.currentUser!;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         CustomDivider(),
-        StreamProvider.value(
+        StreamProvider<List<OrderDetailsModel>>.value(
           initialData: [],
           value: _orderServices.streamMyOrders(user.uid),
           builder: (context, child) {

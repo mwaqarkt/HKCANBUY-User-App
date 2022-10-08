@@ -30,7 +30,7 @@ class SignUpBusinessLogic with ChangeNotifier {
       required String password,
       required UserModel userModel,
       required BuildContext context,
-      required User user}) async {
+      required User? user}) async {
     _status = SignUpStatus.Registering;
     notifyListeners();
 

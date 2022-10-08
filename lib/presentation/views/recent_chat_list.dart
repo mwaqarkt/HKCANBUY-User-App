@@ -13,6 +13,7 @@ import '/presentation/elements/loading_widget.dart';
 import '/presentation/elements/noData.dart';
 import '/presentation/views/contact_us.dart';
 import '/presentation/views/dashboard.dart';
+
 class RecentChatList extends StatefulWidget {
   @override
   _RecentChatListState createState() => _RecentChatListState();
@@ -25,7 +26,7 @@ class _RecentChatListState extends State<RecentChatList> {
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         return await Navigator.push(
             context, MaterialPageRoute(builder: (context) => Dashboard()));
       },
@@ -115,12 +116,12 @@ class _RecentChatListState extends State<RecentChatList> {
                                                       Messages(
                                                         receiverID:
                                                             _model.otherID!,
-                                                        productImage:
-                                                            _model.productImage!,
+                                                        productImage: _model
+                                                            .productImage!,
                                                         productName:
                                                             _model.productName!,
-                                                        productPrice:
-                                                            _model.productPrice!,
+                                                        productPrice: _model
+                                                            .productPrice!,
                                                       )));
                                         },
                                         child: CustomNotificationTile(
@@ -140,13 +141,10 @@ class _RecentChatListState extends State<RecentChatList> {
                                                   .recentMessage ??
                                               "",
                                           time: context
-                                                  .watch<
-                                                      List<
-                                                          ChatDetailsModel>>()[
-                                                      i]
-                                                  .time
-                                                  .toString() ??
-                                              "",
+                                              .watch<List<ChatDetailsModel>>()[
+                                                  i]
+                                              .time
+                                              .toString(),
                                           counter: unReadContext
                                               .watch<List<MessagesModel>>()
                                               .length,

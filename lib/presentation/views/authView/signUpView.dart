@@ -34,7 +34,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    SignUpBusinessLogic signUp = Provider.of<SignUpBusinessLogic>(context);
+   
     node = FocusScope.of(context);
     return
         //  LoadingOverlay(
@@ -54,9 +54,9 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   Widget _getUI(BuildContext context) {
-    AuthServices users = Provider.of<AuthServices>(context);
+
     SignUpBusinessLogic signUp = Provider.of<SignUpBusinessLogic>(context);
-    var user = Provider.of<User>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: Form(
@@ -181,7 +181,7 @@ class _SignUpViewState extends State<SignUpView> {
                       if (!_formKey.currentState!.validate()) {
                         return;
                       }
-                      _signUpUser(context: context, signUp: signUp, user: user);
+                      _signUpUser(context: context, signUp: signUp, user: FirebaseAuth.instance.currentUser);
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(
@@ -233,7 +233,7 @@ class _SignUpViewState extends State<SignUpView> {
   _signUpUser(
       {required BuildContext context,
       required SignUpBusinessLogic signUp,
-      required User user}) {
+      required User? user}) {
     signUp
         .registerNewUser(
             email: _emailController.text,

@@ -18,10 +18,11 @@ class CartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<CartProvider>(context);
-    var user = Provider.of<User>(context);
-    return StreamProvider.value(
+
+    return StreamProvider<List<CartList>>.value(
       initialData: [],
-      value: _cartServices.streamCartList(user.uid),
+      value:
+          _cartServices.streamCartList(FirebaseAuth.instance.currentUser!.uid),
       builder: (ctxt, child) {
         return Scaffold(
           appBar: customAppBar(context, text: "Cart", onTap: () {

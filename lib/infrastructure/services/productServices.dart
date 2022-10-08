@@ -44,7 +44,8 @@ class ProductServices {
         .collection('productsCollection')
         .doc(productID)
         .snapshots()
-        .map((event) => CompleteProductModel.fromJson(event.data() as Map<String,dynamic>));
+        .map((event) => CompleteProductModel.fromJson(
+            event.data() as Map<String, dynamic>));
   }
 
   ///Get Popular Products
@@ -94,7 +95,9 @@ class ProductServices {
 
   ///Update Product Rating
   Future<void> updateProductRating(
-      {required String docID,required  double rating,required  List<CommentReviewModel> list}) async {
+      {required String docID,
+      required double rating,
+      required List<CommentReviewModel> list}) async {
     print("Update  Product : $docID");
     return await FirebaseFirestore.instance
         .collection('productsCollection')
@@ -106,7 +109,9 @@ class ProductServices {
 
   ///Update Product Rating
   Future<void> addRating(
-      {required String docID,required double rating, required List<CommentReviewModel> list}) async {
+      {required String docID,
+      required double rating,
+      required List<CommentReviewModel> list}) async {
     print("Add  Product : $docID");
     return await FirebaseFirestore.instance
         .collection('productsCollection')

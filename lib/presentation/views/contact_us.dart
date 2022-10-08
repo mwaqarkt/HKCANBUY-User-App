@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
@@ -10,7 +11,6 @@ import '/configurations/backEdnConfigs.dart';
 import '/configurations/frontEndConfigs.dart';
 import '/infrastructure/models/chatDetailsModel.dart';
 import '/infrastructure/models/messagModel.dart';
-import '/infrastructure/models/userModel.dart';
 import '/infrastructure/services/chat_services.dart';
 import '/infrastructure/services/user_services.dart';
 import '/presentation/elements/appBar.dart';
@@ -30,10 +30,8 @@ class Messages extends StatefulWidget {
     required this.productImage,
     required this.productName,
     required this.productPrice,
-     this.productID,
+    this.productID,
   }) : super(key: key);
-
-
 
   @override
   _MessagesState createState() => _MessagesState();
@@ -50,8 +48,6 @@ class _MessagesState extends State<Messages> {
 
   bool initialized = false;
 
-  UserModel userModel = UserModel();
-
   UserServices _userServices = UserServices();
   NotificationHandler _notificationHandler = NotificationHandler();
   @override
@@ -61,23 +57,23 @@ class _MessagesState extends State<Messages> {
       appBar: customAppBar(context, text: "Messages", onTap: () {
         Navigator.pop(context);
       }),
-      body: FutureBuilder(
+      body: FutureBuilder<bool>(
           future: storage.ready,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (!initialized) {
-              var items =
-                  storage.getItem(BackEndConfigs.userDetailsLocalStorage);
+            // if (!initialized) {
+            //   var items =
+            //       storage.getItem(BackEndConfigs.userDetailsLocalStorage);
 
-              if (items != null) {
-                userModel = UserModel(
-                  docID: items['docID'],
-                  firstName: items['firstName'],
-                  lastName: items['lastName'],
-                );
-              }
+            // if (items != null) {
+            //   userModel = UserModel(
+            //     docID: items['docID'],
+            //     firstName: items['firstName'],
+            //     lastName: items['lastName'],
+            //   );
+            // }
 
-              initialized = true;
-            }
+            initialized = true;
+            // }
             return snapshot.data == null ? LoadingWidget() : _getUI(context);
           }),
     );
@@ -138,17 +134,18 @@ class _MessagesState extends State<Messages> {
           // ),
           Expanded(
             child: Container(
-              child: StreamProvider.value(
+              child: StreamProvider<List<MessagesModel>>.value(
                 initialData: [],
                 value: _services.streamMessages(
-                    myID: userModel.docID!, senderID: widget.receiverID),
+                    myID: FirebaseAuth.instance.currentUser!.uid,
+                    senderID: widget.receiverID),
                 builder: (context, child) {
-                  // Timer(
-                  //     Duration(milliseconds: 300),
-                  //     () => _scrollController.animateTo(
-                  //         _scrollController.position.maxScrollExtent,
-                  //         duration: Duration(milliseconds: 700),
-                  //         curve: Curves.ease));
+                  Timer(
+                      Duration(milliseconds: 300),
+                      () => _scrollController.animateTo(
+                          _scrollController.position.maxScrollExtent,
+                          duration: Duration(milliseconds: 700),
+                          curve: Curves.ease));
                   return context.watch<List<MessagesModel>>() == null
                       ? LoadingWidget()
                       : ListView.builder(
@@ -156,7 +153,7 @@ class _MessagesState extends State<Messages> {
                           itemCount:
                               context.watch<List<MessagesModel>>().length,
                           itemBuilder: (context, i) {
-                            print(userModel.docID);
+                            print(FirebaseAuth.instance.currentUser!.uid);
                             return MessageTile(
                               message: context
                                   .watch<List<MessagesModel>>()[i]
@@ -164,7 +161,7 @@ class _MessagesState extends State<Messages> {
                               sendByMe: context
                                       .watch<List<MessagesModel>>()[i]
                                       .fromID ==
-                                  userModel.docID,
+                                  FirebaseAuth.instance.currentUser!.uid,
                               time:
                                   context.watch<List<MessagesModel>>()[i].time,
                             );
@@ -225,7 +222,7 @@ class _MessagesState extends State<Messages> {
                           title: "You have new message.");
                       _services.addNewMessage(
                           receiverID: widget.receiverID,
-                          myID: userModel.docID!,
+                          myID: FirebaseAuth.instance.currentUser!.uid,
                           detailsModel: ChatDetailsModel(
                               recentMessage: message,
                               date: DateFormat('MM/dd/yyyy')

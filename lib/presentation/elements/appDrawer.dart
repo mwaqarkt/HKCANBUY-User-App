@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:provider/provider.dart';
 import '/configurations/backEdnConfigs.dart';
 import '/configurations/frontEndConfigs.dart';
 import '/infrastructure/models/userModel.dart';
@@ -17,14 +16,14 @@ import '/presentation/views/viewCategories.dart';
 import 'heigh_sized_box.dart';
 
 class AppDrawer extends StatelessWidget {
-  final LocalStorage storage = new LocalStorage(BackEndConfigs.loginLocalDB);
+  LocalStorage storage = new LocalStorage(BackEndConfigs.loginLocalDB);
   bool initialized = false;
   UserModel userModel = UserModel();
   AuthServices _authServices = AuthServices();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<bool>(
         future: storage.ready,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!initialized) {
@@ -47,7 +46,7 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _getUI(BuildContext context) {
-    var user = Provider.of<User>(context);
+    User? user = FirebaseAuth.instance.currentUser;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -159,7 +158,7 @@ class AppDrawer extends StatelessWidget {
   //
   Widget _createHeader() {
     return Container(
-      height: 240,
+      height: 270,
       child: DrawerHeader(
         margin: EdgeInsets.zero,
         padding: EdgeInsets.zero,
@@ -178,7 +177,7 @@ class AppDrawer extends StatelessWidget {
             ),
             VerticalSpace(10),
             _getHeaderText(
-              userModel.email!,
+              userModel.email ?? "",
             ),
           ],
         ),
@@ -188,7 +187,7 @@ class AppDrawer extends StatelessWidget {
 
   _getHeaderText(String text) {
     return Text(
-      text ?? "N/A",
+      text,
       style: TextStyle(
           color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
     );

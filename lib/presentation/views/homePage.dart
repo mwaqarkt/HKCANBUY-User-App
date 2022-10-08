@@ -6,7 +6,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_3/flutter_swiper_3.dart';
+// import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '/application/productList.dart';
@@ -35,7 +36,6 @@ class _HomePageState extends State<HomePage> {
   int i = 0;
 
   ProductServices _productServices = ProductServices();
-  BannerServices _bannerServices = BannerServices();
 
   List<CompleteProductModel> searchedProducts = [];
 
@@ -44,20 +44,22 @@ class _HomePageState extends State<HomePage> {
   bool isSearchingAllow = false;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   Future<void> _initFcm() async {
-    var uid = FirebaseAuth.instance.currentUser!.uid;
-    _firebaseMessaging.getToken().then((token) {
-      FirebaseFirestore.instance.collection('deviceTokens').doc(uid).set(
-        {
-          'deviceTokens': token,
-        },
-      );
-    });
+    if (FirebaseAuth.instance.currentUser != null) {
+      var uid = FirebaseAuth.instance.currentUser!.uid;
+      _firebaseMessaging.getToken().then((token) {
+        FirebaseFirestore.instance.collection('deviceTokens').doc(uid).set(
+          {
+            'deviceTokens': token,
+          },
+        );
+      });
+    }
   }
 
   @override
   void initState() {
     User? user = FirebaseAuth.instance.currentUser;
- _initFcm();
+    _initFcm();
     super.initState();
   }
 
@@ -134,14 +136,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _bannerServices = Provider.of<BannerServices>(context);
     return WillPopScope(
-      onWillPop: () async{
-      return await   showNavigationDialog(context,
+      onWillPop: () async {
+        return await showNavigationDialog(context,
             message: "do_you_really_want_to_exit",
             buttonText: "yes", navigation: () {
           exit(0);
         }, secondButtonText: "no", showSecondButton: true);
-      
       },
       child: Scaffold(
         appBar: AppBar(
@@ -199,7 +201,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             CustomDivider(),
             VerticalSpace(20),
-            StreamProvider.value(
+            StreamProvider<List<BannerModel>>.value(
               initialData: [],
               value: _bannerServices.streamBanners(),
               builder: (ct, child) {
@@ -224,8 +226,9 @@ class _HomePageState extends State<HomePage> {
                                         null ||
                                     ct.read<List<BannerModel>>()[i].imageUrl !=
                                         "")
-                                  _launchURL(
-                                      ct.read<List<BannerModel>>()[i].imageUrl!);
+                                  _launchURL(ct
+                                      .read<List<BannerModel>>()[i]
+                                      .imageUrl!);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -274,15 +277,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _getUI(BuildContext context) {
-    var productsProvider = Provider.of<ProductProvider>(context);
-    return StreamProvider.value(
+    var productsProvider = Provider.of<ProductProvider>(context, listen: false);
+    return StreamProvider<List<CompleteProductModel>>.value(
       initialData: [],
       value: _getStream(i),
       builder: (context, child) {
-        if (productsProvider.getProducts
-            .isEmpty)        productsProvider
-            .setProductList(context.watch<List<CompleteProductModel>>());
-
+        if (productsProvider.getProducts.isEmpty)
+          Future.delayed(Duration.zero, () {
+            productsProvider
+                .setProductList(context.watch<List<CompleteProductModel>>());
+          });
 
         return context.watch<List<CompleteProductModel>>() == null
             ? Container(

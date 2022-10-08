@@ -18,12 +18,10 @@ class ViewCategories extends StatefulWidget {
 }
 
 class _ViewCategoriesState extends State<ViewCategories> {
-  CategoryServices _categoryServices = CategoryServices();
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         return await Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
       },
@@ -38,12 +36,14 @@ class _ViewCategoriesState extends State<ViewCategories> {
   }
 
   Widget _getUI(BuildContext context) {
+    CategoryServices _categoryServices =
+        Provider.of<CategoryServices>(context, listen: false);
     return Column(
       children: [
         CustomDivider(),
         VerticalSpace(15),
         Expanded(
-          child: StreamProvider.value(
+          child: StreamProvider<List<CategoryModel>>.value(
             initialData: [],
             value: _categoryServices.streamCategory(),
             builder: (context, child) {

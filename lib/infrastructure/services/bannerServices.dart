@@ -7,7 +7,8 @@ class BannerServices {
 
   ///Get Banners
   Stream<List<BannerModel>> streamBanners() {
-    return _bannerServices.snapshots().map((event) =>
-        event.docs.map((e) => BannerModel.fromJson(e.data() as Map<String,dynamic>)).toList());
+    return _bannerServices.snapshots().map((event) => event.docs
+        .map((e) => BannerModel.fromJson(e.data() as Map<String, dynamic>))
+        .toList());
   }
 }
