@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '/infrastructure/models/adddressModel.dart';
 import '/presentation/views/addAvailableDays.dart';
@@ -9,7 +11,7 @@ class AddressTile extends StatefulWidget {
 
   const AddressTile({
     Key? key,
-   required  this.addressModel,
+    required this.addressModel,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,7 @@ class _AddressTileState extends State<AddressTile> {
                   size: 14,
                 ),
                 onPressed: () {
+                  log(widget.addressModel.addressID!);
                   Navigator.push(
                       context,
                       MaterialPageRoute(

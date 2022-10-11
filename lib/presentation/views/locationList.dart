@@ -21,7 +21,7 @@ class _LocationListViewState extends State<LocationListView> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         return await Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
       },
@@ -41,7 +41,7 @@ class _LocationListViewState extends State<LocationListView> {
         CustomDivider(),
         VerticalSpace(15),
         Expanded(
-          child: StreamProvider.value(
+          child: StreamProvider<List<AddressModel>>.value(
             initialData: [],
             value: _addressServices.streamAddress(),
             builder: (context, child) {

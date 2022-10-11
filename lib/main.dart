@@ -8,6 +8,7 @@ import 'package:flutter_beep/flutter_beep.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:provider/provider.dart';
+import 'package:testapp/firebase_options.dart';
 import '/application/cartProvider.dart';
 import '/application/locationProvider.dart';
 import '/application/productDetailsProvider.dart';
@@ -24,7 +25,7 @@ import 'infrastructure/services/bannerServices.dart';
 import 'infrastructure/services/categoryServices.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   print('Handling a background message ${message.messageId}');
   print(message.data);
   flutterLocalNotificationsPlugin.show(
@@ -53,7 +54,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
       AndroidFlutterLocalNotificationsPlugin>();
@@ -77,12 +78,12 @@ void main() async {
       ChangeNotifierProvider(
         create: (_) => AuthServices(),
       ),
-      Provider<CategoryServices>(create: (_) =>  CategoryServices()),
+      Provider<CategoryServices>(create: (_) => CategoryServices()),
 
-        StreamProvider(
-      initialData: User,
-          create: (context) => context.read<AuthServices>().authState,
-        ),
+      StreamProvider(
+        initialData: User,
+        create: (context) => context.read<AuthServices>().authState,
+      ),
       // StreamProvider(
       //   initialData: [],
       //   create: (context) => context.read<BannerServices>().streamBanners(),

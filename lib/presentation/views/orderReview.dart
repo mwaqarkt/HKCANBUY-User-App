@@ -163,7 +163,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             child: AppButton(
               onTap: () async {
                 // await pr!.show();
-                var user = Provider.of<User>(context, listen: false);
+                var user = FirebaseAuth.instance.currentUser!;
 
                 await _orderServices.createOrder(context,
                     userID: user.uid,

@@ -67,7 +67,7 @@ class AddressView extends StatelessWidget {
 
   Widget _getUI(BuildContext context) {
     var userDetails = Provider.of<UserDetailsProvider>(context);
-    var user = Provider.of<User>(context);
+    var user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
       appBar: customAppBar(context, text: "Personal Details", onTap: () {
         Navigator.pop(context);
@@ -97,7 +97,8 @@ class AddressView extends StatelessWidget {
               label: "email".tr(),
               keyBoardType: TextInputType.emailAddress,
               validator: (val) => ValidationHandler.validateInput(
-                  returnString: ValidationConstant.emptyEmail, inputValue: val!),
+                  returnString: ValidationConstant.emptyEmail,
+                  inputValue: val!),
             ),
             DetailTextField(
               data: _phoneNumberController,

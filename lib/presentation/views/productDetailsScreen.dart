@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:provider/provider.dart';
 import '/application/cartBznzLogic.dart';
 import '/configurations/frontEndConfigs.dart';
 import '/infrastructure/models/adddressModel.dart';
@@ -86,7 +85,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     setState(() {});
   }
 
-  int get getSizeIndex => sizeIndex!;
+  int get getSizeIndex => sizeIndex != null ? sizeIndex! : 0;
 
   void setPrice(String _price) {
     price = _price;
@@ -106,7 +105,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<User>(context);
+    var user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: customAppBar(context,
           text: widget.model.productGeneralDetailsModel!.productName!,
@@ -129,7 +128,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 } else {}
                 _cartBusinessLogics
                     .checkIfProductAlreadyExists(
-                        productID: widget.model.docID!, uid: user.uid)
+                        productID: widget.model.docID!, uid: user!.uid)
                     .then((value) {
                   if (selectedFeature.isEmpty) {
                     getFlushBar(context,

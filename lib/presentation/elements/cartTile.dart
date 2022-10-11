@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '/application/cartBznzLogic.dart';
 import '/configurations/frontEndConfigs.dart';
 import '/infrastructure/models/orderModel.dart';
@@ -60,7 +59,8 @@ class _CartTileState extends State<CartTile> {
           width: 60,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(widget.model.productDetails!.productImage!),
+                  image:
+                      NetworkImage(widget.model.productDetails!.productImage!),
                   fit: BoxFit.cover),
               color: Color(0xffF8D4D3),
               shape: BoxShape.rectangle,
@@ -71,7 +71,7 @@ class _CartTileState extends State<CartTile> {
   }
 
   Widget _buildSubTitle(BuildContext context, {@required var list}) {
-    var user = Provider.of<User>(context);
+    var user = FirebaseAuth.instance.currentUser!;
     return Column(
       children: [
         Row(
@@ -87,13 +87,13 @@ class _CartTileState extends State<CartTile> {
                       _cartServices.deleteOneItem(
                           userID: user.uid, docID: widget.model.docID!);
                     }
-                    if (widget.model.quantity !> 1)
+                    if (widget.model.quantity! > 1)
                       _cartServices.decrementProductQuantity(context,
                           uid: user.uid,
                           productID: widget.model.docID!,
                           updatedPrice: int.parse(widget
                                   .model.productDetails!.perQuantityPrice!) *
-                              (widget.model.quantity !+ 1));
+                              (widget.model.quantity! + 1));
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -116,8 +116,8 @@ class _CartTileState extends State<CartTile> {
                     _cartServices.incrementProductQuantity(context,
                         productID: widget.model.docID!,
                         uid: user.uid,
-                        updatedPrice: int.parse(
-                                widget.model.productDetails!.perQuantityPrice!) *
+                        updatedPrice: int.parse(widget
+                                .model.productDetails!.perQuantityPrice!) *
                             (widget.model.quantity! + 1));
                   },
                   child: Container(

@@ -43,7 +43,9 @@ class CartServices {
 
   ///Increment Quantity
   Future<void> incrementProductQuantity(BuildContext context,
-      {required String productID,required  int updatedPrice,required String uid}) async {
+      {required String productID,
+      required int updatedPrice,
+      required String uid}) async {
     FirebaseFirestore.instance
         .collection('cartCollection')
         .doc(uid)
@@ -55,7 +57,9 @@ class CartServices {
 
   ///Decrement Quantity
   Future<void> decrementProductQuantity(BuildContext context,
-      {required String productID,required  int updatedPrice,required  String uid}) async {
+      {required String productID,
+      required int updatedPrice,
+      required String uid}) async {
     FirebaseFirestore.instance
         .collection('cartCollection')
         .doc(uid)
@@ -80,7 +84,8 @@ class CartServices {
   }
 
   ///Empty My Cart
-  Future<void> emptyMyCart({required String docID,required String userID}) async {
+  Future<void> emptyMyCart(
+      {required String docID, required String userID}) async {
     print("User ID : $userID");
     return FirebaseFirestore.instance
         .collection('cartCollection')
@@ -91,7 +96,8 @@ class CartServices {
   }
 
   ///Delete Specific Item
-  Future<void> deleteOneItem({required String docID,required String userID}) async {
+  Future<void> deleteOneItem(
+      {required String docID, required String userID}) async {
     print("User ID : $userID");
     return FirebaseFirestore.instance
         .collection('cartCollection')

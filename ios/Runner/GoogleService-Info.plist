@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>159709294509-3ruqqd9qjbui6op41v6fn8j9pr8j3du6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.159709294509-3ruqqd9qjbui6op41v6fn8j9pr8j3du6</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>159709294509-86aueb9cshpojsnf9h1gfmfo65qktttu.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAWg_tPH8JHl7fSORHbnyT8FMTGWaxIOpo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>159709294509</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hkcanbuy.app</string>
+	<key>PROJECT_ID</key>
+	<string>crud-b5d58</string>
+	<key>STORAGE_BUCKET</key>
+	<string>crud-b5d58.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:159709294509:ios:b70deadd381b391fe2fb24</string>
+	<key>DATABASE_URL</key>
+	<string>https://crud-b5d58.firebaseio.com</string>
+</dict>
+</plist>

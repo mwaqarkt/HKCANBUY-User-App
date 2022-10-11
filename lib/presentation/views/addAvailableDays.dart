@@ -50,7 +50,7 @@ class _AddAvailableDaysState extends State<AddAvailableDays> {
   }
 
   Widget _getUI(BuildContext context) {
-    return StreamProvider.value(
+    return StreamProvider<List<AvailableDaysModel>>.value(
       initialData: [],
       value: _addAvailableDaysServices.streamTimeSlots(widget.locationID),
       builder: (context, child) {
@@ -68,7 +68,7 @@ class _AddAvailableDaysState extends State<AddAvailableDays> {
 
   Widget _displayUI(BuildContext context) {
     var selectedLocation = Provider.of<LocationProvider>(context);
-    var user = Provider.of<User>(context);
+    var user = FirebaseAuth.instance.currentUser!;
     return Column(
       children: [
         CustomDivider(),

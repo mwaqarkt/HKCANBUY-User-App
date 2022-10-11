@@ -36,10 +36,10 @@ class GetCategoryBasedProductsView extends StatelessWidget {
   }
 
   Widget _getUI(BuildContext context) {
-    return StreamProvider.value(
+    return StreamProvider<List<CompleteProductModel>>.value(
       initialData: [],
-      value:
-          _productServices.streamCategoryBasedProduct(categoryModel.categoryID!),
+      value: _productServices
+          .streamCategoryBasedProduct(categoryModel.categoryID!),
       builder: (context, child) {
         return context.watch<List<CompleteProductModel>>() == null
             ? Container(
